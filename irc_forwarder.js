@@ -3,7 +3,7 @@ var irc = require('irc')
 var imessagemodule = require("iMessageModule");
 var sqlite3 = require('sqlite3').verbose();
 var contactMapping = require('./getcontactmapping')();
-var settings = require('./settings');
+var settings = require('./settings.json');
 var _ = require('underscore');
 var fs = require('fs');
 
