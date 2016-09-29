@@ -1,0 +1,21 @@
+{
+  "name": "imessage-irc",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "babel-polyfill": "^6.13.0",
+    "imessage": "^0.1.5",
+    "imessagemodule": "github:meyer9/iMessageModule",
+    "irc": "^0.5.0",
+    "osa-imessage": "^1.0.7",
+    "sqlite3": "^3.1.4",
+    "underscore": "^1.8.3",
+    "zerorpc": "^0.9.6"
+  }
+}
