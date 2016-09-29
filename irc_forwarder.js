@@ -121,7 +121,7 @@ function checkMessageText(messageId) {
         var mappedChatter = contactMap[chatter]
         console.log(rowText, mappedChatter, isGroupChat, gcName)
 
-        if(mappedChatter === undefined) {
+        if(mappedChatter === undefined && !isGroupChat) {
           client.say("#imessage", "Unmapped chatter: " + chatter)
         } else {
           if(isGroupChat && topics[chatter] != gcName) {
