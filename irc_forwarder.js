@@ -66,7 +66,7 @@ client.addListener('error', function(message) {
 setTimeout(function() {
   client.say("#imessage", "iMessage Bot Active!")
   for(var idx in channels) {
-    console.log(channels[idx])
+    client.join(channels[idx])
     client.say("#imessage", "Joining " + channels[idx] + "...")
   }
 }, 1000)
@@ -125,6 +125,9 @@ function checkMessageText(messageId) {
           client.say("#imessage", "Unmapped chatter: " + chatter)
         } else {
           if(isGroupChat && topics[chatter] != gcName) {
+            if(channels.indexOf("#" + chatter) === -1)
+            client.join("#" + chatter)
+            channels.push("#" + chatter)
             topics[chatter] = gcName
             client.send('TOPIC', '#' + chatter, "Group Chat: " + gcName)
           }
@@ -134,7 +137,12 @@ function checkMessageText(messageId) {
             text = nameOfSender + ": "
           }
           text += rowText
-          client.say("#" + mappedChatter, text)
+          if(isGroupChat) {
+            channelToSend = chatter
+          } else {
+            channelToSend = mappedChatter
+          }
+          client.say("#" + channelToSend, text)
         }
 			}
 		});
@@ -153,20 +161,22 @@ db.serialize(function() {
 	}.bind(this));
 }.bind(this));
 
-setInterval(function() {
-	db.serialize(function() {
-		db.all("SELECT MAX(ROWID) AS max FROM message", function(err, rows) {
-			if (rows) {
-				var max = rows[0].max;
-				if (max >= LAST_SEEN_ID) {
-					for (LAST_SEEN_ID; LAST_SEEN_ID <= max; LAST_SEEN_ID++) {
-						checkMessageText(LAST_SEEN_ID);
-					}
-				}
-			}
-		}.bind(this));
-	}.bind(this));
-}, 300);
+setTimeout(function() {
+  setInterval(function() {
+  	db.serialize(function() {
+  		db.all("SELECT MAX(ROWID) AS max FROM message", function(err, rows) {
+  			if (rows) {
+  				var max = rows[0].max;
+  				if (max >= LAST_SEEN_ID) {
+  					for (LAST_SEEN_ID; LAST_SEEN_ID <= max; LAST_SEEN_ID++) {
+  						checkMessageText(LAST_SEEN_ID);
+  					}
+  				}
+  			}
+  		}.bind(this));
+  	}.bind(this));
+  }, 300);
+}, 1100);
 
 //-----------------SENDING------------------//
 client.addListener('message', function (f, to, message) {
