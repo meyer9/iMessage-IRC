@@ -65,10 +65,18 @@ client.addListener('error', function(message) {
 
 setTimeout(function() {
   client.say("#imessage", "iMessage Bot Active!")
-  for(var idx in channels) {
+  idx = 0
+  var channelInt;
+  function nextChannel() {
+    if(idx === channels.length) {
+      clearInterval(channelInt)
+      return
+    }
     client.join(channels[idx])
     client.say("#imessage", "Joining " + channels[idx] + "...")
+    idx += 1
   }
+  channelInt = setInterval(nextChannel, 100)
 }, 1000)
 
 
